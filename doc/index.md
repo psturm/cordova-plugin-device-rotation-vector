@@ -17,101 +17,82 @@
     under the License.
 -->
 
-# org.apache.cordova.device-motion
+# com.grumpysailor.cordova.device-rotation-vector
 
-This plugin provides access to the device's accelerometer. The accelerometer is
-a motion sensor that detects the change (_delta_) in movement relative to the
-current device orientation, in three dimensions along the _x_, _y_, and _z_
-axis.
+This plugin provides access to the device's Rotation Vector Sensor using TYPE_GAME_ROTATION_VECTOR. The Game Rotation Vector represents the orientation of the device as a combination of an angle and an axis (without using the earth's geomagnetic field), in which the device has rotated through an angle θ around an axis (x, y, or z) 
+
+
+
 
 ## Installation
 
-    cordova plugin add org.apache.cordova.device-motion
+    cordova plugin add https://github.com/marciopuga/cordova-plugin-device-motion.git
 
 ## Supported Platforms
 
-- Amazon Fire OS
 - Android
-- BlackBerry 10
-- Browser
-- Firefox OS
-- iOS
-- Tizen
-- Windows Phone 7 and 8
-- Windows 8
 
 ## Methods
 
-- navigator.accelerometer.getCurrentAcceleration
-- navigator.accelerometer.watchAcceleration
-- navigator.accelerometer.clearWatch
+- navigator.rotationvector.getCurrentRotationVector
+- navigator.rotationvector.watchRotationVector
+- navigator.rotationvector.clearWatch
 
 ## Objects
 
-- Acceleration
+- Device Rotation Vector
 
-## navigator.accelerometer.getCurrentAcceleration
+## navigator.rotationvector.getCurrentRotationVector
 
-Get the current acceleration along the _x_, _y_, and _z_ axes.
+Get the current orientation with _alpha_, _beta_, and _gamma_.
 
-These acceleration values are returned to the `accelerometerSuccess`
+These orientation values are returned to the `rotationVectorSuccess`
 callback function.
 
-    navigator.accelerometer.getCurrentAcceleration(accelerometerSuccess, accelerometerError);
+    navigator.rotationvector.getCurrentRotationVector(rotationVectorSuccess, rotationVectorError);
 
 
 ### Example
 
-    function onSuccess(acceleration) {
-        alert('Acceleration X: ' + acceleration.x + '\n' +
-              'Acceleration Y: ' + acceleration.y + '\n' +
-              'Acceleration Z: ' + acceleration.z + '\n' +
-              'Timestamp: '      + acceleration.timestamp + '\n');
+    function onSuccess(rotationvector) {
+        alert('rotationvector alpha: ' + rotationvector.alpha + '\n' +
+              'rotationvector beta: ' + rotationvector.beta + '\n' +
+              'rotationvector gamma: ' + rotationvector.gamma + '\n' +
+              'Timestamp: '      + rotationvector.timestamp + '\n');
     };
 
     function onError() {
         alert('onError!');
     };
 
-    navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+    navigator.rotationvector.getCurrentRotationVector(onSuccess, onError);
 
-### Browser Quirks
 
-Values for X, Y, Z motion are all randomly generated in order to simulate the accelerometer.
+## navigator.rotationvector.watchRotationVector
 
-### iOS Quirks
+Retrieves the device's current `Orientation` at a regular interval, executing
+the `rotationVectorSuccess` callback function each time. Specify the interval in
+milliseconds via the `rotationVectorOptions` object's `frequency` parameter.
 
-- iOS doesn't recognize the concept of getting the current acceleration at any given point.
+The returned watch ID references the RotationVector's watch interval,
+and can be used with `navigator.rotationvector.clearWatch` to stop watching the
+rotation vector.
 
-- You must watch the acceleration and capture the data at given time intervals.
+    var watchID = navigator.rotationvector.watchRotationVector(rotationVectorSuccess,
+                                                           rotationVectorError,
+                                                           rotationVectorOptions);
 
-- Thus, the `getCurrentAcceleration` function yields the last value reported from a `watchAccelerometer` call.
-
-## navigator.accelerometer.watchAcceleration
-
-Retrieves the device's current `Acceleration` at a regular interval, executing
-the `accelerometerSuccess` callback function each time. Specify the interval in
-milliseconds via the `acceleratorOptions` object's `frequency` parameter.
-
-The returned watch ID references the accelerometer's watch interval,
-and can be used with `navigator.accelerometer.clearWatch` to stop watching the
-accelerometer.
-
-    var watchID = navigator.accelerometer.watchAcceleration(accelerometerSuccess,
-                                                           accelerometerError,
-                                                           accelerometerOptions);
-
-- __accelerometerOptions__: An object with the following optional keys:
-  - __period__: requested period of calls to accelerometerSuccess with acceleration data in Milliseconds. _(Number)_ (Default: 10000)
+- rotationVectorOptions: An object with the following optional keys:
+  - __period__: requested period of calls to rotationVectorSuccess with Rotation Vector  data in Milliseconds. _(Number)_ (Default: 10000)
 
 
 ###  Example
 
-    function onSuccess(acceleration) {
-        alert('Acceleration X: ' + acceleration.x + '\n' +
-              'Acceleration Y: ' + acceleration.y + '\n' +
-              'Acceleration Z: ' + acceleration.z + '\n' +
-              'Timestamp: '      + acceleration.timestamp + '\n');
+    function onSuccess(rotationvector) {
+        alert('rotationvector alpha: ' + rotationvector.alpha + '\n' +
+              'rotationvector beta: ' + rotationvector.beta + '\n' +
+              'rotationvector gamma: ' + rotationvector.gamma + '\n' +
+              'Timestamp: '      + rotationvector.timestamp + '\n');
     };
 
     function onError() {
@@ -120,43 +101,21 @@ accelerometer.
 
     var options = { frequency: 3000 };  // Update every 3 seconds
 
-    var watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+    var watchID = navigator.rotationvector.watchRotationVector(onSuccess, onError, options);
 
-### iOS Quirks
 
-The API calls the success callback function at the interval requested,
-but restricts the range of requests to the device between 40ms and
-1000ms. For example, if you request an interval of 3 seconds,
-(3000ms), the API requests data from the device every 1 second, but
-only executes the success callback every 3 seconds.
+## navigator.rotationvector.clearWatch
 
-## navigator.accelerometer.clearWatch
+Stop watching the `Orientation` referenced by the `watchID` parameter.
 
-Stop watching the `Acceleration` referenced by the `watchID` parameter.
+    navigator.rotationvector.clearWatch(watchID);
 
-    navigator.accelerometer.clearWatch(watchID);
-
-- __watchID__: The ID returned by `navigator.accelerometer.watchAcceleration`.
+- __watchID__: The ID returned by `navigator.rotationvector.watchRotationVector`.
 
 ###  Example
 
-    var watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+    var watchID = navigator.rotationvector.watchRotationVector(onSuccess, onError, options);
 
     // ... later on ...
 
-    navigator.accelerometer.clearWatch(watchID);
-
-## Acceleration
-
-Contains `Accelerometer` data captured at a specific point in time.
-Acceleration values include the effect of gravity (9.81 m/s^2), so that when a
-device lies flat and facing up, _x_, _y_, and _z_ values returned should be
-`0`, `0`, and `9.81`.
-
-### Properties
-
-- __x__:  Amount of acceleration on the x-axis. (in m/s^2) _(Number)_
-- __y__:  Amount of acceleration on the y-axis. (in m/s^2) _(Number)_
-- __z__:  Amount of acceleration on the z-axis. (in m/s^2) _(Number)_
-- __timestamp__: Creation timestamp in milliseconds. _(DOMTimeStamp)_
-
+    navigator.rotationvector.clearWatch(watchID);
