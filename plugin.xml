@@ -24,15 +24,15 @@
     <description>Cordova Device Rotation Vector Plugin</description>
     <license>Apache 2.0</license>
     <keywords>cordova,device,motion, orientation</keywords>
-    <repo>https://github.com/marciopuga/cordova-plugin-device-motion.git</repo>
+    <repo>https://github.com/marciopuga/cordova-plugin-device-rotation-vector.git</repo>
     
 
     <js-module src="www/RotationVector.js" name="RotationVector">
         <clobbers target="RotationVector" />
     </js-module>
     
-    <js-module src="www/rotation-vector.js" name="rotation-vector">
-        <clobbers target="navigator.rotation-vector" />
+    <js-module src="www/rotation-vector.js" name="rotationvector">
+        <clobbers target="navigator.rotationvector" />
     </js-module>
 
     
