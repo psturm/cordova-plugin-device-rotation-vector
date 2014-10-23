@@ -20,23 +20,23 @@
 */
 
 exports.defineAutoTests = function () {
-  describe('Accelerometer (navigator.accelerometer)', function () {
+  describe('RotationVector (navigator.rotationvector)', function () {
     var fail = function(done) {
       expect(true).toBe(false);
       done();
     };
 
-    it("accelerometer.spec.1 should exist", function () {
-      expect(navigator.accelerometer).toBeDefined();
+    it("rotationvector.spec.1 should exist", function () {
+      expect(navigator.rotationvector).toBeDefined();
     });
 
     describe("getCurrentAcceleration", function() {
-      it("accelerometer.spec.2 should exist", function() {
-        expect(typeof navigator.accelerometer.getCurrentAcceleration).toBeDefined();
-        expect(typeof navigator.accelerometer.getCurrentAcceleration == 'function').toBe(true);
+      it("rotationvector.spec.2 should exist", function() {
+        expect(typeof navigator.rotationvector.getCurrentAcceleration).toBeDefined();
+        expect(typeof navigator.rotationvector.getCurrentAcceleration == 'function').toBe(true);
       });
 
-      it("accelerometer.spec.3 success callback should be called with an Acceleration object", function(done) {
+      it("rotationvector.spec.3 success callback should be called with an Acceleration object", function(done) {
         var win = function(a) {
           expect(a).toBeDefined();
           expect(a.x).toBeDefined();
@@ -50,10 +50,10 @@ exports.defineAutoTests = function () {
           done();
         };
 
-        navigator.accelerometer.getCurrentAcceleration(win, fail.bind(null, done));
+        navigator.rotationvector.getCurrentAcceleration(win, fail.bind(null, done));
       });
 
-      it("accelerometer.spec.4 success callback Acceleration object should have (reasonable) values for x, y and z expressed in m/s^2", function(done) {
+      it("rotationvector.spec.4 success callback Acceleration object should have (reasonable) values for x, y and z expressed in m/s^2", function(done) {
         var reasonableThreshold = 15;
         var win = function(a) {
           expect(a.x).toBeLessThan(reasonableThreshold);
@@ -65,10 +65,10 @@ exports.defineAutoTests = function () {
           done()
         };
 
-        navigator.accelerometer.getCurrentAcceleration(win, fail.bind(null,done));
+        navigator.rotationvector.getCurrentAcceleration(win, fail.bind(null,done));
       });
 
-      it("accelerometer.spec.5 success callback Acceleration object should return a recent timestamp", function(done) {
+      it("rotationvector.spec.5 success callback Acceleration object should return a recent timestamp", function(done) {
         var veryRecently = (new Date()).getTime();
         // Need to check that dates returned are not vastly greater than a recent time stamp.
         // In case the timestamps returned are ridiculously high
@@ -79,7 +79,7 @@ exports.defineAutoTests = function () {
           done();
         };
 
-        navigator.accelerometer.getCurrentAcceleration(win, fail.bind(null,done));
+        navigator.rotationvector.getCurrentAcceleration(win, fail.bind(null,done));
       });
     });
 
@@ -87,15 +87,15 @@ exports.defineAutoTests = function () {
       var id;
 
       afterEach(function() {
-          navigator.accelerometer.clearWatch(id);
+          navigator.rotationvector.clearWatch(id);
       });
 
-      it("accelerometer.spec.6 should exist", function() {
-          expect(navigator.accelerometer.watchAcceleration).toBeDefined();
-          expect(typeof navigator.accelerometer.watchAcceleration == 'function').toBe(true);
+      it("rotationvector.spec.6 should exist", function() {
+          expect(navigator.rotationvector.watchAcceleration).toBeDefined();
+          expect(typeof navigator.rotationvector.watchAcceleration == 'function').toBe(true);
       });
 
-      it("accelerometer.spec.7 success callback should be called with an Acceleration object", function(done) {
+      it("rotationvector.spec.7 success callback should be called with an Acceleration object", function(done) {
         var win = function(a) {
           expect(a).toBeDefined();
           expect(a.x).toBeDefined();
@@ -109,10 +109,10 @@ exports.defineAutoTests = function () {
           done();
         };
 
-        id = navigator.accelerometer.watchAcceleration(win, fail.bind(null,done), {frequency:100});
+        id = navigator.rotationvector.watchAcceleration(win, fail.bind(null,done), {frequency:100});
       });
 
-        it("accelerometer.spec.8 success callback Acceleration object should have (reasonable) values for x, y and z expressed in m/s^2", function(done) {
+        it("rotationvector.spec.8 success callback Acceleration object should have (reasonable) values for x, y and z expressed in m/s^2", function(done) {
           var reasonableThreshold = 15;
           var win = function(a) {
             expect(a.x).toBeLessThan(reasonableThreshold);
@@ -124,10 +124,10 @@ exports.defineAutoTests = function () {
             done();
           };
 
-          id = navigator.accelerometer.watchAcceleration(win, fail.bind(null,done), {frequency:100});
+          id = navigator.rotationvector.watchAcceleration(win, fail.bind(null,done), {frequency:100});
         });
 
-        it("accelerometer.spec.9 success callback Acceleration object should return a recent timestamp", function(done) {
+        it("rotationvector.spec.9 success callback Acceleration object should return a recent timestamp", function(done) {
           var veryRecently = (new Date()).getTime();
           // Need to check that dates returned are not vastly greater than a recent time stamp.
           // In case the timestamps returned are ridiculously high
@@ -138,23 +138,23 @@ exports.defineAutoTests = function () {
             done();
           };
 
-          id = navigator.accelerometer.watchAcceleration(win, fail.bind(null,done), {frequency:100});
+          id = navigator.rotationvector.watchAcceleration(win, fail.bind(null,done), {frequency:100});
         });
     });
 
     describe("clearWatch", function() {
-      it("accelerometer.spec.10 should exist", function() {
-          expect(navigator.accelerometer.clearWatch).toBeDefined();
-          expect(typeof navigator.accelerometer.clearWatch == 'function').toBe(true);
+      it("rotationvector.spec.10 should exist", function() {
+          expect(navigator.rotationvector.clearWatch).toBeDefined();
+          expect(typeof navigator.rotationvector.clearWatch == 'function').toBe(true);
       });
 
-      it("accelerometer.spec.11 should clear an existing watch", function(done) {
+      it("rotationvector.spec.11 should clear an existing watch", function(done) {
           var id;
 
           // expect win to get called exactly once
           var win = function(a) {
             // clear watch on first call
-            navigator.accelerometer.clearWatch(id);
+            navigator.rotationvector.clearWatch(id);
             // if win isn't called again in 201 ms we assume success
             var tid = setTimeout(function() {
               expect(true).toBe(true);
@@ -168,7 +168,7 @@ exports.defineAutoTests = function () {
           };
 
           // wrap the success call in a closure since the value of win changes between calls
-          id = navigator.accelerometer.watchAcceleration(function() { win(); }, fail.bind(null, done), {frequency:100});
+          id = navigator.rotationvector.watchAcceleration(function() { win(); }, fail.bind(null, done), {frequency:100});
       });
     });
   });
@@ -204,13 +204,13 @@ exports.defineManualTests = function (contentEl, createActionButton) {
         var fail = function (e) {
             console.log("watchAccel fail callback with error code " + e);
             stopAccel();
-            setAccelStatus(Accelerometer.ERROR_MSG[e]);
+            setAccelStatus(rotationvector.ERROR_MSG[e]);
         };
 
         // Update acceleration every 1 sec
         var opt = {};
         opt.frequency = 1000;
-        watchAccelId = navigator.accelerometer.watchAcceleration(success, fail, opt);
+        watchAccelId = navigator.rotationvector.watchAcceleration(success, fail, opt);
 
         setAccelStatus("Running");
     };
@@ -222,7 +222,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
         console.log("stopAccel()");
         setAccelStatus("Stopped");
         if (watchAccelId) {
-            navigator.accelerometer.clearWatch(watchAccelId);
+            navigator.rotationvector.clearWatch(watchAccelId);
             watchAccelId = null;
         }
     };
@@ -247,16 +247,16 @@ exports.defineManualTests = function (contentEl, createActionButton) {
         // Fail callback
         var fail = function (e) {
             console.log("getAccel fail callback with error code " + e);
-            setAccelStatus(Accelerometer.ERROR_MSG[e]);
+            setAccelStatus(rotationvector.ERROR_MSG[e]);
         };
 
         // Make call
         var opt = {};
-        navigator.accelerometer.getCurrentAcceleration(success, fail, opt);
+        navigator.rotationvector.getCurrentAcceleration(success, fail, opt);
     };
 
     /**
-     * Set accelerometer status
+     * Set rotationvector status
      */
     var setAccelStatus = function (status) {
         document.getElementById('accel_status').innerHTML = status;
@@ -264,12 +264,12 @@ exports.defineManualTests = function (contentEl, createActionButton) {
 
     /******************************************************************************/
 
-    var accelerometer_tests = '<div id="getAcceleration"></div>' +
+    var rotationvector_tests = '<div id="getAcceleration"></div>' +
         'Expected result: Will update the status box with X, Y, and Z values when pressed. Status will read "Stopped"' +
         '<p/> <div id="watchAcceleration"></div>' +
-        'Expected result: When pressed, will start a watch on the accelerometer and update X,Y,Z values when movement is sensed. Status will read "Running"' +
+        'Expected result: When pressed, will start a watch on the rotationvector and update X,Y,Z values when movement is sensed. Status will read "Running"' +
         '<p/> <div id="clearAcceleration"></div>' +
-        'Expected result: Will clear the accelerometer watch, so X,Y,Z values will no longer be updated. Status will read "Stopped"';
+        'Expected result: Will clear the rotationvector watch, so X,Y,Z values will no longer be updated. Status will read "Stopped"';
 
     contentEl.innerHTML = '<div id="info">' +
         'Status: <span id="accel_status">Stopped</span>' +
@@ -278,7 +278,7 @@ exports.defineManualTests = function (contentEl, createActionButton) {
         '<tr><td width="20%">Y:</td><td id="y"> </td></tr>' +
         '<tr><td width="20%">Z:</td><td id="z"> </td></tr>' +
         '</table></div>' +
-        accelerometer_tests;
+        rotationvector_tests;
 
     createActionButton('Get Acceleration', function () {
         getAccel();

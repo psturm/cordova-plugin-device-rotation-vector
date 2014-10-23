@@ -19,23 +19,11 @@
  *
 */
 
-function listener(success, ev) {
-    var acc = ev.accelerationIncludingGravity;
-    acc.timestamp = new Date().getTime();
-    success(acc);
-}
-
-var Accelerometer = {
-    start: function start(success, error) {
-        return window.addEventListener('devicemotion', function(ev) {
-            listener(success, ev);
-        }, false);
-    },
-
-    stop: function stop() {
-        window.removeEventListener('devicemotion', listener, false);
-    }
+var RotationVector = function(alpha, beta, gamma, timestamp) {
+    this.alpha = x;
+    this.beta = y;
+    this.gamma = z;
+    this.timestamp = timestamp || (new Date()).getTime();
 };
 
-module.exports = Accelerometer;
-require('cordova/exec/proxy').add('Accelerometer', Accelerometer);
+module.exports = RotationVector;

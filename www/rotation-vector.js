@@ -20,31 +20,31 @@
 */
 
 /**
- * This class provides access to device accelerometer data.
+ * This class provides access to device RotationVector data.
  * @constructor
  */
 var argscheck = require('cordova/argscheck'),
     utils = require("cordova/utils"),
     exec = require("cordova/exec"),
-    Acceleration = require('./Acceleration');
+    RotationVector = require('./RotationVector');
 
 // Is the accel sensor running?
 var running = false;
 
-// Keeps reference to watchAcceleration calls.
+// Keeps reference to watchRotationVector calls.
 var timers = {};
 
 // Array of listeners; used to keep track of when we should call start and stop.
 var listeners = [];
 
-// Last returned acceleration object from native
+// Last returned RotationVector object from native
 var accel = null;
 
 // Tells native to start.
 function start() {
     exec(function(a) {
         var tempListeners = listeners.slice(0);
-        accel = new Acceleration(a.x, a.y, a.z, a.timestamp);
+        accel = new RotationVector(a.x, a.y, a.z, a.timestamp);
         for (var i = 0, l = tempListeners.length; i < l; i++) {
             tempListeners[i].win(accel);
         }
@@ -53,13 +53,13 @@ function start() {
         for (var i = 0, l = tempListeners.length; i < l; i++) {
             tempListeners[i].fail(e);
         }
-    }, "Accelerometer", "start", []);
+    }, "RotationVector", "start", []);
     running = true;
 }
 
 // Tells native to stop.
 function stop() {
-    exec(null, null, "Accelerometer", "stop", []);
+    exec(null, null, "RotationVector", "stop", []);
     running = false;
 }
 
@@ -79,16 +79,16 @@ function removeListeners(l) {
     }
 }
 
-var accelerometer = {
+var rotation-vector = {
     /**
-     * Asynchronously acquires the current acceleration.
+     * Asynchronously acquires the current RotationVector.
      *
-     * @param {Function} successCallback    The function to call when the acceleration data is available
-     * @param {Function} errorCallback      The function to call when there is an error getting the acceleration data. (OPTIONAL)
-     * @param {AccelerationOptions} options The options for getting the accelerometer data such as timeout. (OPTIONAL)
+     * @param {Function} successCallback    The function to call when the RotationVector data is available
+     * @param {Function} errorCallback      The function to call when there is an error getting the RotationVector data. (OPTIONAL)
+     * @param {RotationVectorOptions} options The options for getting the RotationVector data such as timeout. (OPTIONAL)
      */
-    getCurrentAcceleration: function(successCallback, errorCallback, options) {
-        argscheck.checkArgs('fFO', 'accelerometer.getCurrentAcceleration', arguments);
+    getCurrentRotationVector: function(successCallback, errorCallback, options) {
+        argscheck.checkArgs('fFO', 'rotationvector.getCurrentRotationVector', arguments);
 
         var p;
         var win = function(a) {
@@ -109,15 +109,15 @@ var accelerometer = {
     },
 
     /**
-     * Asynchronously acquires the acceleration repeatedly at a given interval.
+     * Asynchronously acquires the RotationVector repeatedly at a given interval.
      *
-     * @param {Function} successCallback    The function to call each time the acceleration data is available
-     * @param {Function} errorCallback      The function to call when there is an error getting the acceleration data. (OPTIONAL)
-     * @param {AccelerationOptions} options The options for getting the accelerometer data such as timeout. (OPTIONAL)
+     * @param {Function} successCallback    The function to call each time the RotationVector data is available
+     * @param {Function} errorCallback      The function to call when there is an error getting the RotationVector data. (OPTIONAL)
+     * @param {RotationVectorOptions} options The options for getting the RotationVector data such as timeout. (OPTIONAL)
      * @return String                       The watch id that must be passed to #clearWatch to stop watching.
      */
-    watchAcceleration: function(successCallback, errorCallback, options) {
-        argscheck.checkArgs('fFO', 'accelerometer.watchAcceleration', arguments);
+    watchRotationVector: function(successCallback, errorCallback, options) {
+        argscheck.checkArgs('fFO', 'rotationvector.watchRotationVector', arguments);
         // Default interval (10 sec)
         var frequency = (options && options.frequency && typeof options.frequency == 'number') ? options.frequency : 10000;
 
@@ -149,19 +149,13 @@ var accelerometer = {
             start();
         }
 
-        // Continuously calls the devicemotion listener and gets new accelerometer values
-        devicemotion = new Event('devicemotion')
-        window.setInterval(function() {
-            window.dispatchEvent(devicemotion);
-        }, 200);
-
         return id;
     },
 
     /**
-     * Clears the specified accelerometer watch.
+     * Clears the specified RotationVector watch.
      *
-     * @param {String} id       The id of the watch returned from #watchAcceleration.
+     * @param {String} id       The id of the watch returned from #watchRotationVector.
      */
     clearWatch: function(id) {
         // Stop javascript timer & remove from timer list
@@ -172,4 +166,4 @@ var accelerometer = {
         }
     }
 };
-module.exports = accelerometer;
+module.exports = rotation-vector;
