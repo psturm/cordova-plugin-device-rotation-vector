@@ -16,7 +16,7 @@
        specific language governing permissions and limitations
        under the License.
 */
-package org.apache.cordova.devicemotion;
+package com.grumpysailor.cordova.device-rotation-vector;
 
 import java.util.List;
 
@@ -39,17 +39,17 @@ import android.os.Handler;
 import android.os.Looper;
 
 /**
- * This class listens to the accelerometer sensor and stores the latest
+ * This class listens to the rotation-vector sensor and stores the latest
  * acceleration values x,y,z.
  */
-public class AccelListener extends CordovaPlugin implements SensorEventListener {
+public class RotationVectorListener extends CordovaPlugin implements SensorEventListener {
 
     public static int STOPPED = 0;
     public static int STARTING = 1;
     public static int RUNNING = 2;
     public static int ERROR_FAILED_TO_START = 3;
    
-    private float x,y,z;                                // most recent acceleration values
+    private float alpha,beta,gamma;                                // most recent acceleration values
     private long timestamp;                         // time of most recent value
     private int status;                                 // status of listener
     private int accuracy = SensorManager.SENSOR_STATUS_UNRELIABLE;
@@ -62,19 +62,19 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
     private Handler mainHandler=null;
     private Runnable mainRunnable =new Runnable() {
         public void run() {
-            AccelListener.this.timeout();
+            RotationVectorListener.this.timeout();
         }
     };
 
     /**
-     * Create an accelerometer listener.
+     * Create an rotation-vector listener.
      */
-    public AccelListener() {
-        this.x = 0;
-        this.y = 0;
-        this.z = 0;
+    public RotationVectorListener() {
+        this.alpha = 0;
+        this.beta = 0;
+        this.gamma = 0;
         this.timestamp = 0;
-        this.setStatus(AccelListener.STOPPED);
+        this.setStatus(RotationVectorListener.STOPPED);
      }
 
     /**
@@ -101,14 +101,14 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
         if (action.equals("start")) {
             this.callbackContext = callbackContext;
-            if (this.status != AccelListener.RUNNING) {
+            if (this.status != RotationVectorListener.RUNNING) {
                 // If not running, then this is an async call, so don't worry about waiting
                 // We drop the callback onto our stack, call start, and let start and the sensor callback fire off the callback down the road
                 this.start();
             }
         }
         else if (action.equals("stop")) {
-            if (this.status == AccelListener.RUNNING) {
+            if (this.status == RotationVectorListener.RUNNING) {
                 this.stop();
             }
         } else {
@@ -141,23 +141,23 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
     */
     private int start() {
         // If already starting or running, then just return
-        if ((this.status == AccelListener.RUNNING) || (this.status == AccelListener.STARTING)) {
+        if ((this.status == RotationVectorListener.RUNNING) || (this.status == RotationVectorListener.STARTING)) {
             return this.status;
         }
 
-        this.setStatus(AccelListener.STARTING);
+        this.setStatus(RotationVectorListener.STARTING);
 
-        // Get accelerometer from sensor manager
-        List<Sensor> list = this.sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
+        // Get rotation-vector from sensor manager
+        List<Sensor> list = this.sensorManager.getSensorList(Sensor.TYPE_GAME_ROTATION_VECTOR);
 
         // If found, then register as listener
         if ((list != null) && (list.size() > 0)) {
           this.mSensor = list.get(0);
           this.sensorManager.registerListener(this, this.mSensor, SensorManager.SENSOR_DELAY_UI);
-          this.setStatus(AccelListener.STARTING);
+          this.setStatus(RotationVectorListener.STARTING);
         } else {
-          this.setStatus(AccelListener.ERROR_FAILED_TO_START);
-          this.fail(AccelListener.ERROR_FAILED_TO_START, "No sensors found to register accelerometer listening to.");
+          this.setStatus(RotationVectorListener.ERROR_FAILED_TO_START);
+          this.fail(RotationVectorListener.ERROR_FAILED_TO_START, "No sensors found to register rotation-vector listening to.");
           return this.status;
         }
 
@@ -178,10 +178,10 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
      */
     private void stop() {
         stopTimeout();
-        if (this.status != AccelListener.STOPPED) {
+        if (this.status != RotationVectorListener.STOPPED) {
             this.sensorManager.unregisterListener(this);
         }
-        this.setStatus(AccelListener.STOPPED);
+        this.setStatus(RotationVectorListener.STOPPED);
         this.accuracy = SensorManager.SENSOR_STATUS_UNRELIABLE;
     }
 
@@ -191,9 +191,9 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
      * Called two seconds after starting the listener.
      */
     private void timeout() {
-        if (this.status == AccelListener.STARTING) {
-            this.setStatus(AccelListener.ERROR_FAILED_TO_START);
-            this.fail(AccelListener.ERROR_FAILED_TO_START, "Accelerometer could not be started.");
+        if (this.status == RotationVectorListener.STARTING) {
+            this.setStatus(RotationVectorListener.ERROR_FAILED_TO_START);
+            this.fail(RotationVectorListener.ERROR_FAILED_TO_START, "rotation-vector could not be started.");
         }
     }
 
@@ -204,13 +204,13 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
      * @param accuracy
      */
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // Only look at accelerometer events
-        if (sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+        // Only look at rotation-vector events
+        if (sensor.getType() != Sensor.TYPE_GAME_ROTATION_VECTOR) {
             return;
         }
 
         // If not running, then just return
-        if (this.status == AccelListener.STOPPED) {
+        if (this.status == RotationVectorListener.STOPPED) {
             return;
         }
         this.accuracy = accuracy;
@@ -222,8 +222,9 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
      * @param SensorEvent event
      */
     public void onSensorChanged(SensorEvent event) {
+        float[] deviceRotationMatrix = new float[9];
         // Only look at accelerometer events
-        if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
+        if (event.sensor.getType() != Sensor.TYPE_GAME_ROTATION_VECTOR) {
             return;
         }
 
@@ -237,12 +238,55 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
 
             // Save time that event was received
             this.timestamp = System.currentTimeMillis();
-            this.x = event.values[0];
-            this.y = event.values[1];
-            this.z = event.values[2];
+
+            SensorManager.getRotationMatrixFromVector(deviceRotationMatrix, event.values);
+            double[] rotationAngles = new double[3];
+            computeDeviceOrientationFromRotationMatrix(deviceRotationMatrix, rotationAngles);
+
+            this.alpha = Math.toDegrees(rotationAngles[0]);
+            this.beta = Math.toDegrees(rotationAngles[1]);
+            this.gamma = Math.toDegrees(rotationAngles[2]);
 
             this.win();
         }
+    }
+
+    private static double[] computeDeviceOrientationFromRotationMatrix(float[] R, double[] values) {
+        if (R.length != 9)
+            return values;
+ 
+         if (R[8] > 0) {  // cos(beta) > 0
+             values[0] = Math.atan2(-R[1], R[4]);
+             values[1] = Math.asin(R[7]);           // beta (-pi/2, pi/2)
+             values[2] = Math.atan2(-R[6], R[8]);   // gamma (-pi/2, pi/2)
+         } else if (R[8] < 0) {  // cos(beta) < 0
+             values[0] = Math.atan2(R[1], -R[4]);
+             values[1] = -Math.asin(R[7]);
+             values[1] += (values[1] >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
+             values[2] = Math.atan2(R[6], -R[8]);   // gamma (-pi/2, pi/2)
+         } else { // R[8] == 0
+             if (R[6] > 0) {  // cos(gamma) == 0, cos(beta) > 0
+                 values[0] = Math.atan2(-R[1], R[4]);
+                 values[1] = Math.asin(R[7]);       // beta [-pi/2, pi/2]
+                 values[2] = -Math.PI / 2;          // gamma = -pi/2
+          } else if (R[6] < 0) { // cos(gamma) == 0, cos(beta) < 0
+          values[0] = Math.atan2(R[1], -R[4]);
+             values[1] = -Math.asin(R[7]);
+             values[1] += (values[1] >= 0) ? -Math.PI : Math.PI; // beta [-pi,-pi/2) U (pi/2,pi)
+             values[2] = -Math.PI / 2;          // gamma = -pi/2
+         } else { // R[6] == 0, cos(beta) == 0
+             // gimbal lock discontinuity
+             values[0] = Math.atan2(R[3], R[0]);
+             values[1] = (R[7] > 0) ? Math.PI / 2 : -Math.PI / 2;  // beta = +-pi/2
+             values[2] = 0;                                        // gamma = 0
+         }
+     }
+
+        // alpha is in [-pi, pi], make sure it is in [0, 2*pi).
+        if (values[0] < 0)
+            values[0] += 2 * Math.PI; // alpha [0, 2*pi)
+
+        return values;
     }
 
     /**
@@ -250,7 +294,7 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
      */
     @Override
     public void onReset() {
-        if (this.status == AccelListener.RUNNING) {
+        if (this.status == RotationVectorListener.RUNNING) {
             this.stop();
         }
     }
@@ -272,7 +316,7 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
 
     private void win() {
         // Success return object
-        PluginResult result = new PluginResult(PluginResult.Status.OK, this.getAccelerationJSON());
+        PluginResult result = new PluginResult(PluginResult.Status.OK, this.getRotationJSON());
         result.setKeepCallback(true);
         callbackContext.sendPluginResult(result);
     }
@@ -280,12 +324,12 @@ public class AccelListener extends CordovaPlugin implements SensorEventListener 
     private void setStatus(int status) {
         this.status = status;
     }
-    private JSONObject getAccelerationJSON() {
+    private JSONObject getRotationJSON() {
         JSONObject r = new JSONObject();
         try {
-            r.put("x", this.x);
-            r.put("y", this.y);
-            r.put("z", this.z);
+            r.put("alpha", this.alpha);
+            r.put("gamma", this.gamma);
+            r.put("beta", this.beta);
             r.put("timestamp", this.timestamp);
         } catch (JSONException e) {
             e.printStackTrace();

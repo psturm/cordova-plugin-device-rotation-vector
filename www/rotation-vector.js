@@ -79,7 +79,7 @@ function removeListeners(l) {
     }
 }
 
-var rotation-vector = {
+var rotationvector = {
     /**
      * Asynchronously acquires the current RotationVector.
      *
@@ -166,4 +166,4 @@ var rotation-vector = {
         }
     }
 };
-module.exports = rotation-vector;
+module.exports = rotationvector;
