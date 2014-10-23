@@ -19,14 +19,14 @@
 
 # com.grumpysailor.cordova.device-rotation-vector
 
-This plugin provides access to the device's Rotation Vector Sensor using TYPE_GAME_ROTATION_VECTOR. The Game Rotation Vector represents the orientation of the device as a combination of an angle and an axis (without using the earth's geomagnetic field), in which the device has rotated through an angle θ around an axis (x, y, or z) 
+This plugin provides access to the device's Rotation Vector Sensor using TYPE_GAME_ROTATION_VECTOR. The Game Rotation Vector represents the orientation of the device (without using the earth's geomagnetic field) as a combination of an angle and an axis, in which the device has rotated through an angle θ around an axis (x, y, or z) 
 
 
 
 
 ## Installation
 
-    cordova plugin add https://github.com/marciopuga/cordova-plugin-device-motion.git
+    cordova plugin add https://github.com/marciopuga/cordova-plugin-device-rotation-vector.git
 
 ## Supported Platforms
 
