@@ -18,13 +18,16 @@
   under the License.
 -->
 
-<plugin>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-device-rotation-vector"
+    version="1.0.2">
 	
     <name>Device Rotation Vector</name>
-    <description>Cordova Device Rotation Vector Plugin</description>
-    <license>Apache 2.0</license>
-    <keywords>cordova,device,motion, orientation</keywords>
-    <repo>https://github.com/marciopuga/cordova-plugin-device-rotation-vector.git</repo>
+    <description>Cordova Device Rotation Vector Plugin </description>
+    <license> Apache 2.0 </license>
+    <keywords> cordova,device,motion, orientation </keywords>
+    <repo> https://github.com/marciopuga/cordova-plugin-device-rotation-vector.git </repo>
     
 
     <js-module src="www/RotationVector.js" name="RotationVector">
