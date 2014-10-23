@@ -20,9 +20,9 @@
 */
 
 var RotationVector = function(alpha, beta, gamma, timestamp) {
-    this.alpha = x;
-    this.beta = y;
-    this.gamma = z;
+    this.alpha = alpha;
+    this.beta = beta;
+    this.gamma = gamma;
     this.timestamp = timestamp || (new Date()).getTime();
 };
 
