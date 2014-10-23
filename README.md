@@ -17,6 +17,6 @@
          under the License.
 -->
 
-# org.apache.cordova.device-motion
+# com.grumpysailor.cordova.device-orientation
 
 Plugin documentation: [doc/index.md](doc/index.md)
