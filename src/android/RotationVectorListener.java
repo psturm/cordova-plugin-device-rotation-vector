@@ -229,10 +229,10 @@ public class RotationVectorListener extends CordovaPlugin implements SensorEvent
         }
 
         // If not running, then just return
-        if (this.status == AccelListener.STOPPED) {
+        if (this.status == RotationVectorListener.STOPPED) {
             return;
         }
-        this.setStatus(AccelListener.RUNNING);
+        this.setStatus(RotationVectorListener.RUNNING);
 
         if (this.accuracy >= SensorManager.SENSOR_STATUS_ACCURACY_MEDIUM) {
 
