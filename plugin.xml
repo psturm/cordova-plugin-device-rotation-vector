@@ -42,10 +42,9 @@
 
     <!-- android -->
     <platform name="android">
-	    
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="RotationVector">
-                <param name="android-package" value="com.grumpysailor.cordova.device-rotation-vector.RotationVectorListener"/>
+                <param name="android-package" value="com.grumpysailor.cordova.devicerotationvector.RotationVectorListener"/>
             </feature>
         </config-file>
 
