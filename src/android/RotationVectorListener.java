@@ -16,7 +16,7 @@
        specific language governing permissions and limitations
        under the License.
 */
-package com.grumpysailor.cordova.device-rotation-vector;
+package com.grumpysailor.cordova.devicerotationvector;
 
 import java.util.List;
 

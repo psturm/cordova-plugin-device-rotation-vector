@@ -49,7 +49,7 @@
             </feature>
         </config-file>
 
-        <source-file src="src/android/RotationVectorListener.java" target-dir="src/com/grumpysailor/cordova/device-rotation-vector" />
+        <source-file src="src/android/RotationVectorListener.java" target-dir="src/com/grumpysailor/cordova/devicerotationvector" />
     
     </platform>
 </plugin>
