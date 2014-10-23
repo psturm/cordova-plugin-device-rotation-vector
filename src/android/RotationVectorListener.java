@@ -49,7 +49,7 @@ public class RotationVectorListener extends CordovaPlugin implements SensorEvent
     public static int RUNNING = 2;
     public static int ERROR_FAILED_TO_START = 3;
    
-    private float alpha,beta,gamma;                                // most recent acceleration values
+    private double alpha,beta,gamma;                                // most recent acceleration values
     private long timestamp;                         // time of most recent value
     private int status;                                 // status of listener
     private int accuracy = SensorManager.SENSOR_STATUS_UNRELIABLE;
