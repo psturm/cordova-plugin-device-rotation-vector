@@ -39,12 +39,12 @@ exports.defineAutoTests = function () {
       it("rotationvector.spec.3 success callback should be called with an Acceleration object", function(done) {
         var win = function(a) {
           expect(a).toBeDefined();
-          expect(a.x).toBeDefined();
-          expect(typeof a.x == 'number').toBe(true);
-          expect(a.y).toBeDefined();
-          expect(typeof a.y == 'number').toBe(true);
-          expect(a.z).toBeDefined();
-          expect(typeof a.z == 'number').toBe(true);
+          expect(a.alpha).toBeDefined();
+          expect(typeof a.alpha == 'number').toBe(true);
+          expect(a.beta).toBeDefined();
+          expect(typeof a.beta == 'number').toBe(true);
+          expect(a.gamma).toBeDefined();
+          expect(typeof a.gamma == 'number').toBe(true);
           expect(a.timestamp).toBeDefined();
           expect(typeof a.timestamp).toBe('number');
           done();
@@ -56,12 +56,12 @@ exports.defineAutoTests = function () {
       it("rotationvector.spec.4 success callback Acceleration object should have (reasonable) values for x, y and z expressed in m/s^2", function(done) {
         var reasonableThreshold = 15;
         var win = function(a) {
-          expect(a.x).toBeLessThan(reasonableThreshold);
-          expect(a.x).toBeGreaterThan(reasonableThreshold * -1);
-          expect(a.y).toBeLessThan(reasonableThreshold);
-          expect(a.y).toBeGreaterThan(reasonableThreshold * -1);
-          expect(a.z).toBeLessThan(reasonableThreshold);
-          expect(a.z).toBeGreaterThan(reasonableThreshold * -1);
+          expect(a.alpha).toBeLessThan(reasonableThreshold);
+          expect(a.alpha).toBeGreaterThan(reasonableThreshold * -1);
+          expect(a.beta).toBeLessThan(reasonableThreshold);
+          expect(a.beta).toBeGreaterThan(reasonableThreshold * -1);
+          expect(a.gamma).toBeLessThan(reasonableThreshold);
+          expect(a.gamma).toBeGreaterThan(reasonableThreshold * -1);
           done()
         };
 
@@ -98,12 +98,12 @@ exports.defineAutoTests = function () {
       it("rotationvector.spec.7 success callback should be called with an Acceleration object", function(done) {
         var win = function(a) {
           expect(a).toBeDefined();
-          expect(a.x).toBeDefined();
-          expect(typeof a.x == 'number').toBe(true);
-          expect(a.y).toBeDefined();
-          expect(typeof a.y == 'number').toBe(true);
-          expect(a.z).toBeDefined();
-          expect(typeof a.z == 'number').toBe(true);
+          expect(a.alpha).toBeDefined();
+          expect(typeof a.alpha == 'number').toBe(true);
+          expect(a.beta).toBeDefined();
+          expect(typeof a.beta == 'number').toBe(true);
+          expect(a.gamma).toBeDefined();
+          expect(typeof a.gamma == 'number').toBe(true);
           expect(a.timestamp).toBeDefined();
           expect(typeof a.timestamp).toBe('number');
           done();
@@ -115,12 +115,12 @@ exports.defineAutoTests = function () {
         it("rotationvector.spec.8 success callback Acceleration object should have (reasonable) values for x, y and z expressed in m/s^2", function(done) {
           var reasonableThreshold = 15;
           var win = function(a) {
-            expect(a.x).toBeLessThan(reasonableThreshold);
-            expect(a.x).toBeGreaterThan(reasonableThreshold * -1);
-            expect(a.y).toBeLessThan(reasonableThreshold);
-            expect(a.y).toBeGreaterThan(reasonableThreshold * -1);
-            expect(a.z).toBeLessThan(reasonableThreshold);
-            expect(a.z).toBeGreaterThan(reasonableThreshold * -1);
+            expect(a.alpha).toBeLessThan(reasonableThreshold);
+            expect(a.alpha).toBeGreaterThan(reasonableThreshold * -1);
+            expect(a.beta).toBeLessThan(reasonableThreshold);
+            expect(a.beta).toBeGreaterThan(reasonableThreshold * -1);
+            expect(a.gamma).toBeLessThan(reasonableThreshold);
+            expect(a.gamma).toBeGreaterThan(reasonableThreshold * -1);
             done();
           };
 
@@ -195,9 +195,9 @@ exports.defineManualTests = function (contentEl, createActionButton) {
 
         // Success callback
         var success = function (a) {
-            document.getElementById('x').innerHTML = roundNumber(a.x);
-            document.getElementById('y').innerHTML = roundNumber(a.y);
-            document.getElementById('z').innerHTML = roundNumber(a.z);
+            document.getElementById('x').innerHTML = roundNumber(a.alpha);
+            document.getElementById('y').innerHTML = roundNumber(a.beta);
+            document.getElementById('z').innerHTML = roundNumber(a.gamma);
         };
 
         // Fail callback
@@ -238,9 +238,9 @@ exports.defineManualTests = function (contentEl, createActionButton) {
 
         // Success callback
         var success = function (a) {
-            document.getElementById('x').innerHTML = roundNumber(a.x);
-            document.getElementById('y').innerHTML = roundNumber(a.y);
-            document.getElementById('z').innerHTML = roundNumber(a.z);
+            document.getElementById('x').innerHTML = roundNumber(a.alpha);
+            document.getElementById('y').innerHTML = roundNumber(a.beta);
+            document.getElementById('z').innerHTML = roundNumber(a.gamma);
             console.log("getAccel success callback");
         };
 
