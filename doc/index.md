@@ -26,7 +26,7 @@ This plugin provides access to the device's [Rotation Vector Sensor](http://deve
 
 ## Installation
 
-    cordova plugin add https://github.com/marciopuga/cordova-plugin-device-rotation-vector.git
+    cordova plugin add https://github.com/GrumpySailor/cordova-plugin-device-rotation-vector.git
 
 ## Supported Platforms
 
