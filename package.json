@@ -1,0 +1,16 @@
+{
+  "name": "cordova-plugin-device-rotation-vector",
+  "version": "1.0.2",
+  "description": "",
+  "main": "www/rotation-vector.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/psturm/cordova-plugin-device-rotation-vector.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/psturm/cordova-plugin-device-rotation-vector#readme"
+}
